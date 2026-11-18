@@ -39,3 +39,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# EAS Simulator session config (contains a token)
+.env.eas-simulator
