@@ -39,8 +39,8 @@ export default function SummaryScreen() {
         </View>
       </View>
 
-      {/* navigate('/') unwinds to the existing Home screen, which unmounts the questions and clears the answers. */}
-      <PrimaryButton title="Back to Home" onPress={() => router.navigate('/')} />
+      {/* dismissTo('/') pops back to the original Home screen, which unmounts the questions and clears the answers. */}
+      <PrimaryButton title="Back to Home" onPress={() => router.dismissTo('/')} />
     </ScrollView>
   );
 }
