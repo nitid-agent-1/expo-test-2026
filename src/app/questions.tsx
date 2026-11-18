@@ -44,10 +44,12 @@ export default function QuestionsScreen() {
 
   return (
     <NarrationScrollView style={styles.scroll} contentContainerStyle={styles.content}>
-      <NarrationSection id="questions.liked" style={styles.question}>
-        <Text style={styles.prompt} accessibilityRole="header">
-          {copy.questions.liked.prompt}
-        </Text>
+      <View style={styles.question}>
+        <NarrationSection id="questions.liked.prompt">
+          <Text style={styles.prompt} accessibilityRole="header">
+            {copy.questions.liked.prompt}
+          </Text>
+        </NarrationSection>
         <View style={styles.grid} accessibilityRole="radiogroup">
           {LIKE_OPTIONS.map((option) => (
             <View key={option.value} style={styles.cell}>
@@ -62,13 +64,15 @@ export default function QuestionsScreen() {
             </View>
           ))}
         </View>
-      </NarrationSection>
+      </View>
 
-      <NarrationSection id="questions.feelings" style={styles.question}>
-        <Text style={styles.prompt} accessibilityRole="header">
-          {copy.questions.feelings.prompt}
-        </Text>
-        <Text style={styles.hint}>{copy.questions.feelings.hint}</Text>
+      <View style={styles.question}>
+        <NarrationSection id="questions.feelings.prompt" style={styles.promptBlock}>
+          <Text style={styles.prompt} accessibilityRole="header">
+            {copy.questions.feelings.prompt}
+          </Text>
+          <Text style={styles.hint}>{copy.questions.feelings.hint}</Text>
+        </NarrationSection>
         <View style={styles.grid}>
           {FEELING_IDS.map((feeling) => (
             <View key={feeling} style={styles.cell}>
@@ -83,7 +87,7 @@ export default function QuestionsScreen() {
             </View>
           ))}
         </View>
-      </NarrationSection>
+      </View>
 
       <NarrationSection id="questions.done" style={styles.footer}>
         <PrimaryButton title={copy.questions.done} onPress={onDone} disabled={!canFinish} />
@@ -98,7 +102,8 @@ const styles = StyleSheet.create({
   content: { padding: 24, paddingBottom: 48, gap: 28 },
   question: { gap: 12 },
   prompt: { fontSize: 20, fontWeight: '600', color: colors.text },
-  hint: { fontSize: 15, color: colors.textMuted, marginTop: -4 },
+  promptBlock: { gap: 8 },
+  hint: { fontSize: 15, color: colors.textMuted },
   grid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -6, rowGap: 12 },
   cell: { width: '50%', paddingHorizontal: 6, flexDirection: 'row' },
   cellInner: { flex: 1, flexDirection: 'row' },

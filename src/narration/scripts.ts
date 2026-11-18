@@ -1,5 +1,7 @@
 import type { CopyKey } from '@/copy';
-import { type FeelingId, type LikeAnswer } from '@/constants/quiz';
+import { FEELING_IDS, type FeelingId, LIKE_OPTIONS, type LikeAnswer } from '@/constants/quiz';
+
+const LIKE_ANSWERS = LIKE_OPTIONS.map((o) => o.value);
 
 /**
  * A narration segment: one highlighted section of the screen and the clips
@@ -24,24 +26,15 @@ export const poemScript: NarrationScript = [
   { section: 'poem.next', keys: ['poem.next'] },
 ];
 
+// Each question and each answer is its own section, so only the part being read glows.
 export const questionsScript: NarrationScript = [
-  {
-    section: 'questions.liked',
-    keys: ['questions.liked.prompt', 'questions.liked.yes', 'questions.liked.no'],
-  },
-  {
-    section: 'questions.feelings',
-    keys: [
-      'questions.feelings.prompt',
-      'questions.feelings.hint',
-      'questions.feelings.happy',
-      'questions.feelings.calm',
-      'questions.feelings.tired',
-      'questions.feelings.curious',
-      'questions.feelings.anxious',
-      'questions.feelings.excited',
-    ],
-  },
+  { section: 'questions.liked.prompt', keys: ['questions.liked.prompt'] },
+  ...LIKE_ANSWERS.map((a): NarrationSegment => ({ section: `questions.liked.${a}`, keys: [`questions.liked.${a}`] })),
+  { section: 'questions.feelings.prompt', keys: ['questions.feelings.prompt', 'questions.feelings.hint'] },
+  ...FEELING_IDS.map((f): NarrationSegment => ({
+    section: `questions.feelings.${f}`,
+    keys: [`questions.feelings.${f}`],
+  })),
   { section: 'questions.done', keys: ['questions.done', 'questions.doneHint'] },
 ];
 
