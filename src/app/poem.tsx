@@ -1,23 +1,29 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { colors, serif } from '@/constants/theme';
 import { copy } from '@/copy';
+import { NarrationScrollView } from '@/narration/NarrationScrollView';
+import { NarrationSection } from '@/narration/NarrationSection';
+import { poemScript } from '@/narration/scripts';
+import { useScreenNarration } from '@/narration/useScreenNarration';
 
 // "Jabberwocky" by Lewis Carroll (1871), stanzas 1–4 of 7. Public domain.
-const STANZAS = [copy.poem.stanza1, copy.poem.stanza2, copy.poem.stanza3, copy.poem.stanza4].map((stanza) =>
-  stanza.split('\n'),
-);
+const STANZAS = [
+  { id: 'poem.stanza1', text: copy.poem.stanza1 },
+  { id: 'poem.stanza2', text: copy.poem.stanza2 },
+  { id: 'poem.stanza3', text: copy.poem.stanza3 },
+  { id: 'poem.stanza4', text: copy.poem.stanza4 },
+].map((s) => ({ ...s, lines: s.text.split('\n') }));
 
 export default function PoemScreen() {
+  useScreenNarration(poemScript);
+
   return (
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.content}
-      contentInsetAdjustmentBehavior="automatic">
-      <View style={styles.figure}>
+    <NarrationScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+      <NarrationSection id="poem.image" style={styles.figure}>
         <Image
           source={require('../../assets/images/jabberwock-tenniel.jpg')}
           style={styles.image}
@@ -25,29 +31,31 @@ export default function PoemScreen() {
           accessibilityLabel={copy.poem.imageAlt}
         />
         <Text style={styles.caption}>{copy.poem.imageCaption}</Text>
-      </View>
+      </NarrationSection>
 
-      <View style={styles.heading}>
+      <NarrationSection id="poem.heading" style={styles.heading}>
         <Text style={styles.title} accessibilityRole="header">
           {copy.poem.title}
         </Text>
         <Text style={styles.byline}>{copy.poem.byline}</Text>
-      </View>
+      </NarrationSection>
 
       <View style={styles.poem}>
-        {STANZAS.map((stanza, i) => (
-          <View key={i}>
-            {stanza.map((line, j) => (
+        {STANZAS.map((stanza) => (
+          <NarrationSection key={stanza.id} id={stanza.id}>
+            {stanza.lines.map((line, j) => (
               <Text key={j} style={[styles.line, j % 2 === 1 && styles.indented]}>
                 {line}
               </Text>
             ))}
-          </View>
+          </NarrationSection>
         ))}
       </View>
 
-      <PrimaryButton title={copy.poem.next} onPress={() => router.push('/questions')} />
-    </ScrollView>
+      <NarrationSection id="poem.next">
+        <PrimaryButton title={copy.poem.next} onPress={() => router.push('/questions')} />
+      </NarrationSection>
+    </NarrationScrollView>
   );
 }
 

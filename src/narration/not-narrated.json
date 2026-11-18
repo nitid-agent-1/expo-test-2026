@@ -1,0 +1,4 @@
+{
+  "$comment": "Copy keys (or key prefixes ending in '.') that are never narrated. scripts/narration.mjs leaves them out of status and recording sheets.",
+  "keys": ["nav.", "about.", "narration."]
+}

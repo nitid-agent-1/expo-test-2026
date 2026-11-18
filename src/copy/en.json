@@ -4,7 +4,8 @@
     "about": "About",
     "poem": "Poem",
     "questions": "Questions",
-    "summary": "Summary"
+    "summary": "Summary",
+    "language": "Language"
   },
   "home": {
     "title": "Hello, world!",
@@ -31,7 +32,11 @@
     "liked": {
       "prompt": "1. Did you like the poem?",
       "yes": "Yes",
-      "no": "No"
+      "no": "No",
+      "selected": {
+        "yes": "You selected “Yes”.",
+        "no": "You selected “No”."
+      }
     },
     "feelings": {
       "prompt": "2. How do you feel today?",
@@ -41,7 +46,23 @@
       "tired": "Tired",
       "curious": "Curious",
       "anxious": "Anxious",
-      "excited": "Excited"
+      "excited": "Excited",
+      "selected": {
+        "happy": "You selected “Happy”.",
+        "calm": "You selected “Calm”.",
+        "tired": "You selected “Tired”.",
+        "curious": "You selected “Curious”.",
+        "anxious": "You selected “Anxious”.",
+        "excited": "You selected “Excited”."
+      },
+      "deselected": {
+        "happy": "You deselected “Happy”.",
+        "calm": "You deselected “Calm”.",
+        "tired": "You deselected “Tired”.",
+        "curious": "You deselected “Curious”.",
+        "anxious": "You deselected “Anxious”.",
+        "excited": "You deselected “Excited”."
+      }
     },
     "done": "Done",
     "doneHint": "Answer both questions to continue."
@@ -53,5 +74,13 @@
     "feelingsQuestion": "How do you feel today?",
     "noAnswer": "No answer",
     "backHome": "Back to Home"
+  },
+  "narration": {
+    "mute": "Mute narration",
+    "unmute": "Unmute narration",
+    "languageButton": "Narration language: {{language}}",
+    "pickerHint": "The text on screen stays in English. This chooses the language you hear.",
+    "clipCount": "{{recorded}} of {{total}} clips recorded",
+    "screenReaderOn": "Narration is paused while VoiceOver or TalkBack is on."
   }
 }

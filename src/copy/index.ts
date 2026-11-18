@@ -18,3 +18,10 @@ export type CopyKey = Leaves<typeof en>;
 export function text(key: CopyKey): string {
   return key.split('.').reduce<unknown>((node, part) => (node as Record<string, unknown>)[part], en) as string;
 }
+
+/** Fill {{name}} placeholders in a copy string. */
+export function format(template: string, values: Record<string, string | number>): string {
+  return template.replace(/\{\{(\w+)\}\}/g, (match, name: string) =>
+    name in values ? String(values[name]) : match,
+  );
+}

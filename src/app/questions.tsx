@@ -1,21 +1,37 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { ChoiceRow } from '@/components/ChoiceRow';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { FEELING_IDS, type FeelingId, feelingLabel, LIKE_OPTIONS, type LikeAnswer } from '@/constants/quiz';
 import { colors } from '@/constants/theme';
 import { copy } from '@/copy';
+import { useNarration } from '@/narration/NarrationProvider';
+import { NarrationScrollView } from '@/narration/NarrationScrollView';
+import { NarrationSection } from '@/narration/NarrationSection';
+import { questionsScript } from '@/narration/scripts';
+import { useScreenNarration } from '@/narration/useScreenNarration';
 
 export default function QuestionsScreen() {
+  useScreenNarration(questionsScript);
+  const { say } = useNarration();
   const [liked, setLiked] = useState<LikeAnswer | null>(null);
   const [feelings, setFeelings] = useState<FeelingId[]>([]);
 
-  const toggleFeeling = (feeling: FeelingId) =>
-    setFeelings((current) =>
-      current.includes(feeling) ? current.filter((f) => f !== feeling) : [...current, feeling],
-    );
+  const pickLiked = (value: LikeAnswer) => {
+    setLiked(value);
+    say({ section: `questions.liked.${value}`, keys: [`questions.liked.selected.${value}`] });
+  };
+
+  const toggleFeeling = (feeling: FeelingId) => {
+    const selected = !feelings.includes(feeling);
+    setFeelings((current) => (selected ? [...current, feeling] : current.filter((f) => f !== feeling)));
+    say({
+      section: `questions.feelings.${feeling}`,
+      keys: [selected ? `questions.feelings.selected.${feeling}` : `questions.feelings.deselected.${feeling}`],
+    });
+  };
 
   const canFinish = liked !== null && feelings.length > 0;
 
@@ -27,29 +43,28 @@ export default function QuestionsScreen() {
   };
 
   return (
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.content}
-      contentInsetAdjustmentBehavior="automatic">
-      <View style={styles.question} accessibilityRole="radiogroup">
+    <NarrationScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+      <NarrationSection id="questions.liked" style={styles.question}>
         <Text style={styles.prompt} accessibilityRole="header">
           {copy.questions.liked.prompt}
         </Text>
-        <View style={styles.grid}>
+        <View style={styles.grid} accessibilityRole="radiogroup">
           {LIKE_OPTIONS.map((option) => (
             <View key={option.value} style={styles.cell}>
-              <ChoiceRow
-                kind="radio"
-                label={option.label}
-                selected={liked === option.value}
-                onPress={() => setLiked(option.value)}
-              />
+              <NarrationSection id={`questions.liked.${option.value}`} style={styles.cellInner}>
+                <ChoiceRow
+                  kind="radio"
+                  label={option.label}
+                  selected={liked === option.value}
+                  onPress={() => pickLiked(option.value)}
+                />
+              </NarrationSection>
             </View>
           ))}
         </View>
-      </View>
+      </NarrationSection>
 
-      <View style={styles.question}>
+      <NarrationSection id="questions.feelings" style={styles.question}>
         <Text style={styles.prompt} accessibilityRole="header">
           {copy.questions.feelings.prompt}
         </Text>
@@ -57,22 +72,24 @@ export default function QuestionsScreen() {
         <View style={styles.grid}>
           {FEELING_IDS.map((feeling) => (
             <View key={feeling} style={styles.cell}>
-              <ChoiceRow
-                kind="checkbox"
-                label={feelingLabel(feeling)}
-                selected={feelings.includes(feeling)}
-                onPress={() => toggleFeeling(feeling)}
-              />
+              <NarrationSection id={`questions.feelings.${feeling}`} style={styles.cellInner}>
+                <ChoiceRow
+                  kind="checkbox"
+                  label={feelingLabel(feeling)}
+                  selected={feelings.includes(feeling)}
+                  onPress={() => toggleFeeling(feeling)}
+                />
+              </NarrationSection>
             </View>
           ))}
         </View>
-      </View>
+      </NarrationSection>
 
-      <View style={styles.footer}>
+      <NarrationSection id="questions.done" style={styles.footer}>
         <PrimaryButton title={copy.questions.done} onPress={onDone} disabled={!canFinish} />
         {!canFinish && <Text style={styles.footerHint}>{copy.questions.doneHint}</Text>}
-      </View>
-    </ScrollView>
+      </NarrationSection>
+    </NarrationScrollView>
   );
 }
 
@@ -84,6 +101,7 @@ const styles = StyleSheet.create({
   hint: { fontSize: 15, color: colors.textMuted, marginTop: -4 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -6, rowGap: 12 },
   cell: { width: '50%', paddingHorizontal: 6, flexDirection: 'row' },
+  cellInner: { flex: 1, flexDirection: 'row' },
   footer: { gap: 8, marginTop: 4 },
   footerHint: { fontSize: 14, color: colors.textMuted, textAlign: 'center' },
 });

@@ -1,34 +1,40 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { feelingLabel, isFeelingId, LIKE_OPTIONS } from '@/constants/quiz';
 import { colors } from '@/constants/theme';
 import { copy } from '@/copy';
+import { NarrationScrollView } from '@/narration/NarrationScrollView';
+import { NarrationSection } from '@/narration/NarrationSection';
+import { summaryScript } from '@/narration/scripts';
+import { useScreenNarration } from '@/narration/useScreenNarration';
 
 export default function SummaryScreen() {
   const params = useLocalSearchParams<{ liked?: string; feelings?: string }>();
-  const likedLabel = LIKE_OPTIONS.find((o) => o.value === params.liked)?.label ?? copy.summary.noAnswer;
-  const feelings = params.feelings ? params.feelings.split(',').filter(isFeelingId) : [];
+  const likedOption = LIKE_OPTIONS.find((o) => o.value === params.liked);
+  const feelingsParam = params.feelings ?? '';
+  const feelings = useMemo(() => feelingsParam.split(',').filter(isFeelingId), [feelingsParam]);
+
+  const script = useMemo(() => summaryScript(likedOption?.value, feelings), [likedOption, feelings]);
+  useScreenNarration(script);
 
   return (
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.content}
-      contentInsetAdjustmentBehavior="automatic">
-      <View style={styles.heading}>
+    <NarrationScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+      <NarrationSection id="summary.heading" style={styles.heading}>
         <Text style={styles.title} accessibilityRole="header">
           {copy.summary.title}
         </Text>
         <Text style={styles.subtitle}>{copy.summary.subtitle}</Text>
-      </View>
+      </NarrationSection>
 
       <View style={styles.card}>
-        <View style={[styles.item, styles.itemDivider]}>
+        <NarrationSection id="summary.liked" style={[styles.item, styles.itemDivider]}>
           <Text style={styles.question}>{copy.summary.likedQuestion}</Text>
-          <Text style={styles.answer}>{likedLabel}</Text>
-        </View>
-        <View style={styles.item}>
+          <Text style={styles.answer}>{likedOption?.label ?? copy.summary.noAnswer}</Text>
+        </NarrationSection>
+        <NarrationSection id="summary.feelings" style={styles.item}>
           <Text style={styles.question}>{copy.summary.feelingsQuestion}</Text>
           <View style={styles.chips}>
             {feelings.map((feeling) => (
@@ -37,12 +43,14 @@ export default function SummaryScreen() {
               </Text>
             ))}
           </View>
-        </View>
+        </NarrationSection>
       </View>
 
       {/* dismissTo('/') pops back to the original Home screen, which unmounts the questions and clears the answers. */}
-      <PrimaryButton title={copy.summary.backHome} onPress={() => router.dismissTo('/')} />
-    </ScrollView>
+      <NarrationSection id="summary.backHome">
+        <PrimaryButton title={copy.summary.backHome} onPress={() => router.dismissTo('/')} />
+      </NarrationSection>
+    </NarrationScrollView>
   );
 }
 
