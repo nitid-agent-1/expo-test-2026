@@ -26,7 +26,10 @@ export default function QuestionsScreen() {
   };
 
   return (
-    <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.content}
+      contentInsetAdjustmentBehavior="automatic">
       <View style={styles.question} accessibilityRole="radiogroup">
         <Text style={styles.prompt} accessibilityRole="header">
           1. Did you like the poem?

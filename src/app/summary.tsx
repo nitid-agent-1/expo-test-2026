@@ -11,7 +11,10 @@ export default function SummaryScreen() {
   const feelings = params.feelings ? params.feelings.split(',').filter(Boolean) : [];
 
   return (
-    <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.content}
+      contentInsetAdjustmentBehavior="automatic">
       <View style={styles.heading}>
         <Text style={styles.title} accessibilityRole="header">
           Thanks for answering!

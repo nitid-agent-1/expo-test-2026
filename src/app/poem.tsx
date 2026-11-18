@@ -35,7 +35,10 @@ const STANZAS = [
 
 export default function PoemScreen() {
   return (
-    <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.content}
+      contentInsetAdjustmentBehavior="automatic">
       <View style={styles.figure}>
         <Image
           source={require('../../assets/images/jabberwock-tenniel.jpg')}
