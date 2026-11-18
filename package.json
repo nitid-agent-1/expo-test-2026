@@ -27,7 +27,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "narration:status": "node scripts/narration.mjs status",
+    "narration:generate": "node scripts/narration.mjs generate",
+    "narration:sheet": "node scripts/narration.mjs sheet"
   },
   "private": true
 }

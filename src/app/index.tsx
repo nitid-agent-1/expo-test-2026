@@ -3,14 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { colors } from '@/constants/theme';
+import { copy } from '@/copy';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello, world!</Text>
+      <Text style={styles.title}>{copy.home.title}</Text>
       <View style={styles.buttons}>
-        <PrimaryButton title="Read a poem" onPress={() => router.push('/poem')} />
-        <PrimaryButton title="About this app" variant="outline" onPress={() => router.push('/about')} />
+        <PrimaryButton title={copy.home.readPoem} onPress={() => router.push('/poem')} />
+        <PrimaryButton title={copy.home.about} variant="outline" onPress={() => router.push('/about')} />
       </View>
     </View>
   );

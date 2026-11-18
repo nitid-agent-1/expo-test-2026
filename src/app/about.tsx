@@ -2,16 +2,17 @@ import Constants from 'expo-constants';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '@/constants/theme';
+import { copy } from '@/copy';
 
 export default function AboutScreen() {
   const rows = [
-    { label: 'Version', value: Constants.expoConfig?.version ?? 'unknown' },
-    { label: 'Platform', value: `${Platform.OS} ${String(Platform.Version)}` },
+    { label: copy.about.versionLabel, value: Constants.expoConfig?.version ?? 'unknown' },
+    { label: copy.about.platformLabel, value: `${Platform.OS} ${String(Platform.Version)}` },
   ];
 
   return (
     <View style={styles.container}>
-      <Text style={styles.eyebrow}>App name</Text>
+      <Text style={styles.eyebrow}>{copy.about.appNameLabel}</Text>
       <Text style={styles.appName}>{Constants.expoConfig?.name ?? 'expo-test-2026'}</Text>
       <View style={styles.table}>
         {rows.map((row) => (

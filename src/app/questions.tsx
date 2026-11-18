@@ -4,14 +4,15 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { ChoiceRow } from '@/components/ChoiceRow';
 import { PrimaryButton } from '@/components/PrimaryButton';
-import { FEELINGS, LIKE_OPTIONS, type LikeAnswer } from '@/constants/quiz';
+import { FEELING_IDS, type FeelingId, feelingLabel, LIKE_OPTIONS, type LikeAnswer } from '@/constants/quiz';
 import { colors } from '@/constants/theme';
+import { copy } from '@/copy';
 
 export default function QuestionsScreen() {
   const [liked, setLiked] = useState<LikeAnswer | null>(null);
-  const [feelings, setFeelings] = useState<string[]>([]);
+  const [feelings, setFeelings] = useState<FeelingId[]>([]);
 
-  const toggleFeeling = (feeling: string) =>
+  const toggleFeeling = (feeling: FeelingId) =>
     setFeelings((current) =>
       current.includes(feeling) ? current.filter((f) => f !== feeling) : [...current, feeling],
     );
@@ -21,7 +22,7 @@ export default function QuestionsScreen() {
   const onDone = () => {
     if (!canFinish) return;
     // Keep the order the options are listed in, not the order they were tapped.
-    const ordered = FEELINGS.filter((f) => feelings.includes(f));
+    const ordered = FEELING_IDS.filter((f) => feelings.includes(f));
     router.push({ pathname: '/summary', params: { liked, feelings: ordered.join(',') } });
   };
 
@@ -32,7 +33,7 @@ export default function QuestionsScreen() {
       contentInsetAdjustmentBehavior="automatic">
       <View style={styles.question} accessibilityRole="radiogroup">
         <Text style={styles.prompt} accessibilityRole="header">
-          1. Did you like the poem?
+          {copy.questions.liked.prompt}
         </Text>
         <View style={styles.grid}>
           {LIKE_OPTIONS.map((option) => (
@@ -50,15 +51,15 @@ export default function QuestionsScreen() {
 
       <View style={styles.question}>
         <Text style={styles.prompt} accessibilityRole="header">
-          2. How do you feel today?
+          {copy.questions.feelings.prompt}
         </Text>
-        <Text style={styles.hint}>Choose all that apply.</Text>
+        <Text style={styles.hint}>{copy.questions.feelings.hint}</Text>
         <View style={styles.grid}>
-          {FEELINGS.map((feeling) => (
+          {FEELING_IDS.map((feeling) => (
             <View key={feeling} style={styles.cell}>
               <ChoiceRow
                 kind="checkbox"
-                label={feeling}
+                label={feelingLabel(feeling)}
                 selected={feelings.includes(feeling)}
                 onPress={() => toggleFeeling(feeling)}
               />
@@ -68,8 +69,8 @@ export default function QuestionsScreen() {
       </View>
 
       <View style={styles.footer}>
-        <PrimaryButton title="Done" onPress={onDone} disabled={!canFinish} />
-        {!canFinish && <Text style={styles.footerHint}>Answer both questions to continue.</Text>}
+        <PrimaryButton title={copy.questions.done} onPress={onDone} disabled={!canFinish} />
+        {!canFinish && <Text style={styles.footerHint}>{copy.questions.doneHint}</Text>}
       </View>
     </ScrollView>
   );

@@ -2,13 +2,14 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
-import { LIKE_OPTIONS } from '@/constants/quiz';
+import { feelingLabel, isFeelingId, LIKE_OPTIONS } from '@/constants/quiz';
 import { colors } from '@/constants/theme';
+import { copy } from '@/copy';
 
 export default function SummaryScreen() {
   const params = useLocalSearchParams<{ liked?: string; feelings?: string }>();
-  const likedLabel = LIKE_OPTIONS.find((o) => o.value === params.liked)?.label ?? 'No answer';
-  const feelings = params.feelings ? params.feelings.split(',').filter(Boolean) : [];
+  const likedLabel = LIKE_OPTIONS.find((o) => o.value === params.liked)?.label ?? copy.summary.noAnswer;
+  const feelings = params.feelings ? params.feelings.split(',').filter(isFeelingId) : [];
 
   return (
     <ScrollView
@@ -17,22 +18,22 @@ export default function SummaryScreen() {
       contentInsetAdjustmentBehavior="automatic">
       <View style={styles.heading}>
         <Text style={styles.title} accessibilityRole="header">
-          Thanks for answering!
+          {copy.summary.title}
         </Text>
-        <Text style={styles.subtitle}>Here’s what you told us.</Text>
+        <Text style={styles.subtitle}>{copy.summary.subtitle}</Text>
       </View>
 
       <View style={styles.card}>
         <View style={[styles.item, styles.itemDivider]}>
-          <Text style={styles.question}>Did you like the poem?</Text>
+          <Text style={styles.question}>{copy.summary.likedQuestion}</Text>
           <Text style={styles.answer}>{likedLabel}</Text>
         </View>
         <View style={styles.item}>
-          <Text style={styles.question}>How do you feel today?</Text>
+          <Text style={styles.question}>{copy.summary.feelingsQuestion}</Text>
           <View style={styles.chips}>
             {feelings.map((feeling) => (
               <Text key={feeling} style={styles.chip}>
-                {feeling}
+                {feelingLabel(feeling)}
               </Text>
             ))}
           </View>
@@ -40,7 +41,7 @@ export default function SummaryScreen() {
       </View>
 
       {/* dismissTo('/') pops back to the original Home screen, which unmounts the questions and clears the answers. */}
-      <PrimaryButton title="Back to Home" onPress={() => router.dismissTo('/')} />
+      <PrimaryButton title={copy.summary.backHome} onPress={() => router.dismissTo('/')} />
     </ScrollView>
   );
 }

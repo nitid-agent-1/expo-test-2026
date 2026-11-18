@@ -42,3 +42,6 @@ yarn-error.*
 
 # EAS Simulator session config (contains a token)
 .env.eas-simulator
+
+# Generated narration recording sheets
+narration-sheets/

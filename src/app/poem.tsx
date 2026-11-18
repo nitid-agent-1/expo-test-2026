@@ -4,34 +4,12 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { colors, serif } from '@/constants/theme';
+import { copy } from '@/copy';
 
 // "Jabberwocky" by Lewis Carroll (1871), stanzas 1–4 of 7. Public domain.
-const STANZAS = [
-  [
-    '’Twas brillig, and the slithy toves',
-    'Did gyre and gimble in the wabe:',
-    'All mimsy were the borogoves,',
-    'And the mome raths outgrabe.',
-  ],
-  [
-    '“Beware the Jabberwock, my son!',
-    'The jaws that bite, the claws that catch!',
-    'Beware the Jubjub bird, and shun',
-    'The frumious Bandersnatch!”',
-  ],
-  [
-    'He took his vorpal sword in hand;',
-    'Long time the manxome foe he sought—',
-    'So rested he by the Tumtum tree',
-    'And stood awhile in thought.',
-  ],
-  [
-    'And, as in uffish thought he stood,',
-    'The Jabberwock, with eyes of flame,',
-    'Came whiffling through the tulgey wood,',
-    'And burbled as it came!',
-  ],
-];
+const STANZAS = [copy.poem.stanza1, copy.poem.stanza2, copy.poem.stanza3, copy.poem.stanza4].map((stanza) =>
+  stanza.split('\n'),
+);
 
 export default function PoemScreen() {
   return (
@@ -44,16 +22,16 @@ export default function PoemScreen() {
           source={require('../../assets/images/jabberwock-tenniel.jpg')}
           style={styles.image}
           contentFit="contain"
-          accessibilityLabel="John Tenniel's engraving of the Jabberwock, a winged dragon-like creature with long claws, looming over a boy holding a sword in a dark forest"
+          accessibilityLabel={copy.poem.imageAlt}
         />
-        <Text style={styles.caption}>Illustration by John Tenniel (1871)</Text>
+        <Text style={styles.caption}>{copy.poem.imageCaption}</Text>
       </View>
 
       <View style={styles.heading}>
         <Text style={styles.title} accessibilityRole="header">
-          Jabberwocky
+          {copy.poem.title}
         </Text>
-        <Text style={styles.byline}>Lewis Carroll · stanzas 1–4 of 7</Text>
+        <Text style={styles.byline}>{copy.poem.byline}</Text>
       </View>
 
       <View style={styles.poem}>
@@ -68,7 +46,7 @@ export default function PoemScreen() {
         ))}
       </View>
 
-      <PrimaryButton title="Next" onPress={() => router.push('/questions')} />
+      <PrimaryButton title={copy.poem.next} onPress={() => router.push('/questions')} />
     </ScrollView>
   );
 }

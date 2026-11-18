@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "poem": "Poem",
+    "questions": "Questions",
+    "summary": "Summary"
+  },
+  "home": {
+    "title": "Hello, world!",
+    "readPoem": "Read a poem",
+    "about": "About this app"
+  },
+  "about": {
+    "appNameLabel": "App name",
+    "versionLabel": "Version",
+    "platformLabel": "Platform"
+  },
+  "poem": {
+    "imageAlt": "John Tenniel's engraving of the Jabberwock, a winged dragon-like creature with long claws, looming over a boy holding a sword in a dark forest",
+    "imageCaption": "Illustration by John Tenniel (1871)",
+    "title": "Jabberwocky",
+    "byline": "Lewis Carroll · stanzas 1–4 of 7",
+    "stanza1": "’Twas brillig, and the slithy toves\nDid gyre and gimble in the wabe:\nAll mimsy were the borogoves,\nAnd the mome raths outgrabe.",
+    "stanza2": "“Beware the Jabberwock, my son!\nThe jaws that bite, the claws that catch!\nBeware the Jubjub bird, and shun\nThe frumious Bandersnatch!”",
+    "stanza3": "He took his vorpal sword in hand;\nLong time the manxome foe he sought—\nSo rested he by the Tumtum tree\nAnd stood awhile in thought.",
+    "stanza4": "And, as in uffish thought he stood,\nThe Jabberwock, with eyes of flame,\nCame whiffling through the tulgey wood,\nAnd burbled as it came!",
+    "next": "Next"
+  },
+  "questions": {
+    "liked": {
+      "prompt": "1. Did you like the poem?",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "feelings": {
+      "prompt": "2. How do you feel today?",
+      "hint": "Choose all that apply.",
+      "happy": "Happy",
+      "calm": "Calm",
+      "tired": "Tired",
+      "curious": "Curious",
+      "anxious": "Anxious",
+      "excited": "Excited"
+    },
+    "done": "Done",
+    "doneHint": "Answer both questions to continue."
+  },
+  "summary": {
+    "title": "Thanks for answering!",
+    "subtitle": "Here’s what you told us.",
+    "likedQuestion": "Did you like the poem?",
+    "feelingsQuestion": "How do you feel today?",
+    "noAnswer": "No answer",
+    "backHome": "Back to Home"
+  }
+}
