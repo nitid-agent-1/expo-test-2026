@@ -1,22 +1,23 @@
 #!/usr/bin/env node
 // Generate narration clips with ElevenLabs text-to-speech from the transcripts
 // (English copy, or narration/translations/<lang>.json). Saves each clip as
-// assets/narration/<lang>/<key>.<fingerprint>.m4a, replacing any older or
-// placeholder clip for that key. Needs ffmpeg, and an ElevenLabs API key in
-// ELEVENLABS_API_KEY (or injected by a proxy).
+// assets/narration/<lang>/<key>.<fingerprint>.mp3, replacing any older or
+// placeholder clip for that key only after the new clip is saved. Needs an
+// ElevenLabs API key in ELEVENLABS_API_KEY (or injected by a proxy).
 //
 // Usage: node scripts/elevenlabs-clips.mjs [--all] [--only <key>] <voice id> <lang> [lang...]
 //   --all   regenerate every clip, not just missing or stale ones
 //           (use it to replace placeholder clips)
 
-import { execFileSync } from 'node:child_process';
-import { mkdirSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { mkdirSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { AUDIO_DIR, clipName, generate, loadCopy, loadTranslations, scan } from './narration.mjs';
 
 const MODEL = 'eleven_multilingual_v2';
+// Mono speech at 64 kbps keeps clips small.
+const OUTPUT_FORMAT = 'mp3_44100_64';
+const API_URL = process.env.ELEVENLABS_API_URL ?? 'https://api.elevenlabs.io';
 const args = process.argv.slice(2);
 const all = args.includes('--all');
 const onlyIdx = args.indexOf('--only');
@@ -31,7 +32,7 @@ const apiKey = process.env.ELEVENLABS_API_KEY ?? 'proxy-injected';
 async function speak(text) {
   for (let attempt = 1; ; attempt++) {
     const res = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`,
+      `${API_URL}/v1/text-to-speech/${voiceId}?output_format=${OUTPUT_FORMAT}`,
       {
         method: 'POST',
         headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
@@ -48,8 +49,6 @@ async function speak(text) {
   }
 }
 
-const work = join(tmpdir(), `elevenlabs-clips-${process.pid}`);
-mkdirSync(work, { recursive: true });
 const copy = loadCopy();
 let chars = 0;
 try {
@@ -67,10 +66,13 @@ try {
         console.warn(`skip ${lang}/${entry.key}: translation is ${t.state}`);
         continue;
       }
-      const mp3 = join(work, 'clip.mp3');
-      writeFileSync(mp3, await speak(t.text));
-      for (const old of existing.get(entry.key) ?? []) unlinkSync(join(dir, old));
-      execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', mp3, '-ac', '1', '-c:a', 'aac', '-b:a', '64k', join(dir, clipName(entry.key, entry.hash))]);
+      const audio = await speak(t.text);
+      // Save under a temporary name first, so a failure never leaves the key without a clip.
+      const name = clipName(entry.key, entry.hash, 'mp3');
+      const tmp = join(dir, `.${name}.partial`);
+      writeFileSync(tmp, audio);
+      for (const old of existing.get(entry.key) ?? []) if (old !== name) unlinkSync(join(dir, old));
+      renameSync(tmp, join(dir, name));
       chars += t.text.length;
       made += 1;
       console.log(`${lang}/${entry.key}`);
@@ -78,7 +80,6 @@ try {
     console.log(`${lang}: made ${made} clip(s)`);
   }
 } finally {
-  rmSync(work, { recursive: true, force: true });
   generate();
   console.log(`about ${chars} characters used`);
 }

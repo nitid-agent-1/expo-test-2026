@@ -62,7 +62,7 @@ npm run narration:generate      # regenerate src/narration/clips.generated.ts af
 npm run narration:placeholders -- es  # robotic test clips for missing/stale keys (needs espeak-ng and ffmpeg)
 ```
 
-To voice clips with ElevenLabs (needs ffmpeg and an API key with Text to Speech
+To voice clips with ElevenLabs (needs an API key with Text to Speech
 access in `ELEVENLABS_API_KEY`; `--all` also replaces placeholder clips):
 
 ```bash
