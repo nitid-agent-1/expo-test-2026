@@ -1,0 +1,182 @@
+{
+  "home.title": {
+    "source": "315f5bdb",
+    "text": "안녕하세요, 세계!"
+  },
+  "home.readPoem": {
+    "source": "9c5c43a1",
+    "text": "시 읽기"
+  },
+  "home.about": {
+    "source": "147cb283",
+    "text": "이 앱에 대하여"
+  },
+  "poem.imageAlt": {
+    "source": "31c50b8a",
+    "text": "존 테니엘이 새긴 재버워크 판화. 날개 달린 용 같은 생물이 긴 발톱을 드러낸 채, 어두운 숲에서 칼을 든 소년 위로 우뚝 솟아 있습니다."
+  },
+  "poem.imageCaption": {
+    "source": "f6690e24",
+    "text": "존 테니엘 그림 (1871년)"
+  },
+  "poem.title": {
+    "source": "cf4debeb",
+    "text": "재버워키"
+  },
+  "poem.byline": {
+    "source": "976cde4a",
+    "text": "루이스 캐럴 · 전체 7연 중 1연부터 4연까지"
+  },
+  "poem.stanza1": {
+    "source": "cb855457",
+    "text": "저녁 무렵이었지, 미끈나른한 토브들이\n언덕배기에서 빙글빙글 뚫어 파고 있었네.\n보로고브들은 모두 비참가냘팠고,\n길 잃은 라스들은 휘파람 울부짖었네."
+  },
+  "poem.stanza2": {
+    "source": "da501c30",
+    "text": "「재버워크를 조심하거라, 아들아!\n물어뜯는 턱과 움켜잡는 발톱을!\n접접새를 조심하고, 피하거라,\n성난 밴더스내치를!」"
+  },
+  "poem.stanza3": {
+    "source": "1fa67fa8",
+    "text": "그는 보팔 검을 손에 쥐고\n오랫동안 맨섬한 적을 찾아 헤맸네.\n그러다 텀텀 나무 곁에서 쉬며\n한동안 생각에 잠겼네."
+  },
+  "poem.stanza4": {
+    "source": "d121980f",
+    "text": "그가 어프한 생각에 잠겨 서 있을 때,\n불꽃 같은 눈을 한 재버워크가\n털지한 숲을 휘휘 지나\n부글거리며 다가왔네!"
+  },
+  "poem.next": {
+    "source": "1ff57a29",
+    "text": "다음"
+  },
+  "questions.liked.prompt": {
+    "source": "29ed45e7",
+    "text": "1. 시가 마음에 드셨나요?"
+  },
+  "questions.liked.yes": {
+    "source": "85a39ab3",
+    "text": "예"
+  },
+  "questions.liked.no": {
+    "source": "1ea442a1",
+    "text": "아니요"
+  },
+  "questions.liked.selected.yes": {
+    "source": "b09d3af7",
+    "text": "‘예’를 선택했습니다."
+  },
+  "questions.liked.selected.no": {
+    "source": "83070bd1",
+    "text": "‘아니요’를 선택했습니다."
+  },
+  "questions.feelings.prompt": {
+    "source": "87a6e6aa",
+    "text": "2. 오늘 기분이 어떠세요?"
+  },
+  "questions.feelings.hint": {
+    "source": "bef67421",
+    "text": "해당하는 것을 모두 고르세요."
+  },
+  "questions.feelings.happy": {
+    "source": "725accb5",
+    "text": "행복해요"
+  },
+  "questions.feelings.calm": {
+    "source": "38f6b83e",
+    "text": "차분해요"
+  },
+  "questions.feelings.tired": {
+    "source": "3c4ce44c",
+    "text": "피곤해요"
+  },
+  "questions.feelings.curious": {
+    "source": "bcbd76ed",
+    "text": "궁금해요"
+  },
+  "questions.feelings.anxious": {
+    "source": "5a77fd03",
+    "text": "불안해요"
+  },
+  "questions.feelings.excited": {
+    "source": "e8dbecf2",
+    "text": "신나요"
+  },
+  "questions.feelings.selected.happy": {
+    "source": "2fa1e4bd",
+    "text": "‘행복해요’를 선택했습니다."
+  },
+  "questions.feelings.selected.calm": {
+    "source": "4da1e245",
+    "text": "‘차분해요’를 선택했습니다."
+  },
+  "questions.feelings.selected.tired": {
+    "source": "1f320949",
+    "text": "‘피곤해요’를 선택했습니다."
+  },
+  "questions.feelings.selected.curious": {
+    "source": "c69435f8",
+    "text": "‘궁금해요’를 선택했습니다."
+  },
+  "questions.feelings.selected.anxious": {
+    "source": "b54d3013",
+    "text": "‘불안해요’를 선택했습니다."
+  },
+  "questions.feelings.selected.excited": {
+    "source": "209d3fc5",
+    "text": "‘신나요’를 선택했습니다."
+  },
+  "questions.feelings.deselected.happy": {
+    "source": "85622344",
+    "text": "‘행복해요’ 선택을 해제했습니다."
+  },
+  "questions.feelings.deselected.calm": {
+    "source": "ce09a28a",
+    "text": "‘차분해요’ 선택을 해제했습니다."
+  },
+  "questions.feelings.deselected.tired": {
+    "source": "a3030ea0",
+    "text": "‘피곤해요’ 선택을 해제했습니다."
+  },
+  "questions.feelings.deselected.curious": {
+    "source": "5a45f9e7",
+    "text": "‘궁금해요’ 선택을 해제했습니다."
+  },
+  "questions.feelings.deselected.anxious": {
+    "source": "430f5d90",
+    "text": "‘불안해요’ 선택을 해제했습니다."
+  },
+  "questions.feelings.deselected.excited": {
+    "source": "661417eb",
+    "text": "‘신나요’ 선택을 해제했습니다."
+  },
+  "questions.done": {
+    "source": "11a6767d",
+    "text": "완료"
+  },
+  "questions.doneHint": {
+    "source": "0dc5f746",
+    "text": "두 질문에 모두 답해야 계속할 수 있어요."
+  },
+  "summary.title": {
+    "source": "6081f6c2",
+    "text": "답해 주셔서 감사합니다!"
+  },
+  "summary.subtitle": {
+    "source": "93295ee8",
+    "text": "알려 주신 내용은 다음과 같습니다."
+  },
+  "summary.likedQuestion": {
+    "source": "d1385bba",
+    "text": "시가 마음에 드셨나요?"
+  },
+  "summary.feelingsQuestion": {
+    "source": "66d0467f",
+    "text": "오늘 기분이 어떠세요?"
+  },
+  "summary.noAnswer": {
+    "source": "7e49c68d",
+    "text": "답변 없음"
+  },
+  "summary.backHome": {
+    "source": "eec78426",
+    "text": "홈으로 돌아가기"
+  }
+}

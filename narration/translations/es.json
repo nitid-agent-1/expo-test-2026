@@ -1,0 +1,182 @@
+{
+  "home.title": {
+    "source": "315f5bdb",
+    "text": "¡Hola, mundo!"
+  },
+  "home.readPoem": {
+    "source": "9c5c43a1",
+    "text": "Leer un poema"
+  },
+  "home.about": {
+    "source": "147cb283",
+    "text": "Acerca de esta app"
+  },
+  "poem.imageAlt": {
+    "source": "31c50b8a",
+    "text": "Grabado de John Tenniel del Jabberwock: una criatura alada, parecida a un dragón y de largas garras, que se alza sobre un muchacho con una espada en un bosque oscuro."
+  },
+  "poem.imageCaption": {
+    "source": "f6690e24",
+    "text": "Ilustración de John Tenniel (1871)"
+  },
+  "poem.title": {
+    "source": "cf4debeb",
+    "text": "Jabberwocky"
+  },
+  "poem.byline": {
+    "source": "976cde4a",
+    "text": "Lewis Carroll · estrofas 1 a 4 de 7"
+  },
+  "poem.stanza1": {
+    "source": "cb855457",
+    "text": "Era la cenahora, y los flexosos tovos\ngiraban y gimbaban en el prado;\nmiserbles estaban los borogovos,\ny los momos ratos chilbramaban."
+  },
+  "poem.stanza2": {
+    "source": "da501c30",
+    "text": "«¡Cuidado con el Jabberwock, hijo mío!\n¡Sus fauces que muerden, sus garras que atrapan!\n¡Cuidado con el pájaro Jubjub, y huye\ndel frumioso Bandersnatch!»"
+  },
+  "poem.stanza3": {
+    "source": "1fa67fa8",
+    "text": "Tomó en su mano su espada vorpal;\nlargo tiempo buscó al manxomo enemigo;\nluego descansó junto al árbol Tumtum\ny se quedó un rato pensativo."
+  },
+  "poem.stanza4": {
+    "source": "d121980f",
+    "text": "Y mientras, en ufoso pensar, se detenía,\nel Jabberwock, con ojos de llama,\nllegó silbando por el bosque tulgoso,\n¡y burbujeaba al avanzar!"
+  },
+  "poem.next": {
+    "source": "1ff57a29",
+    "text": "Siguiente"
+  },
+  "questions.liked.prompt": {
+    "source": "29ed45e7",
+    "text": "1. ¿Te gustó el poema?"
+  },
+  "questions.liked.yes": {
+    "source": "85a39ab3",
+    "text": "Sí"
+  },
+  "questions.liked.no": {
+    "source": "1ea442a1",
+    "text": "No"
+  },
+  "questions.liked.selected.yes": {
+    "source": "b09d3af7",
+    "text": "Seleccionaste «Sí»."
+  },
+  "questions.liked.selected.no": {
+    "source": "83070bd1",
+    "text": "Seleccionaste «No»."
+  },
+  "questions.feelings.prompt": {
+    "source": "87a6e6aa",
+    "text": "2. ¿Cómo te sientes hoy?"
+  },
+  "questions.feelings.hint": {
+    "source": "bef67421",
+    "text": "Elige todas las que correspondan."
+  },
+  "questions.feelings.happy": {
+    "source": "725accb5",
+    "text": "Feliz"
+  },
+  "questions.feelings.calm": {
+    "source": "38f6b83e",
+    "text": "Tranquilo"
+  },
+  "questions.feelings.tired": {
+    "source": "3c4ce44c",
+    "text": "Cansado"
+  },
+  "questions.feelings.curious": {
+    "source": "bcbd76ed",
+    "text": "Curioso"
+  },
+  "questions.feelings.anxious": {
+    "source": "5a77fd03",
+    "text": "Ansioso"
+  },
+  "questions.feelings.excited": {
+    "source": "e8dbecf2",
+    "text": "Emocionado"
+  },
+  "questions.feelings.selected.happy": {
+    "source": "2fa1e4bd",
+    "text": "Seleccionaste «Feliz»."
+  },
+  "questions.feelings.selected.calm": {
+    "source": "4da1e245",
+    "text": "Seleccionaste «Tranquilo»."
+  },
+  "questions.feelings.selected.tired": {
+    "source": "1f320949",
+    "text": "Seleccionaste «Cansado»."
+  },
+  "questions.feelings.selected.curious": {
+    "source": "c69435f8",
+    "text": "Seleccionaste «Curioso»."
+  },
+  "questions.feelings.selected.anxious": {
+    "source": "b54d3013",
+    "text": "Seleccionaste «Ansioso»."
+  },
+  "questions.feelings.selected.excited": {
+    "source": "209d3fc5",
+    "text": "Seleccionaste «Emocionado»."
+  },
+  "questions.feelings.deselected.happy": {
+    "source": "85622344",
+    "text": "Quitaste la selección de «Feliz»."
+  },
+  "questions.feelings.deselected.calm": {
+    "source": "ce09a28a",
+    "text": "Quitaste la selección de «Tranquilo»."
+  },
+  "questions.feelings.deselected.tired": {
+    "source": "a3030ea0",
+    "text": "Quitaste la selección de «Cansado»."
+  },
+  "questions.feelings.deselected.curious": {
+    "source": "5a45f9e7",
+    "text": "Quitaste la selección de «Curioso»."
+  },
+  "questions.feelings.deselected.anxious": {
+    "source": "430f5d90",
+    "text": "Quitaste la selección de «Ansioso»."
+  },
+  "questions.feelings.deselected.excited": {
+    "source": "661417eb",
+    "text": "Quitaste la selección de «Emocionado»."
+  },
+  "questions.done": {
+    "source": "11a6767d",
+    "text": "Listo"
+  },
+  "questions.doneHint": {
+    "source": "0dc5f746",
+    "text": "Responde ambas preguntas para continuar."
+  },
+  "summary.title": {
+    "source": "6081f6c2",
+    "text": "¡Gracias por responder!"
+  },
+  "summary.subtitle": {
+    "source": "93295ee8",
+    "text": "Esto es lo que nos dijiste."
+  },
+  "summary.likedQuestion": {
+    "source": "d1385bba",
+    "text": "¿Te gustó el poema?"
+  },
+  "summary.feelingsQuestion": {
+    "source": "66d0467f",
+    "text": "¿Cómo te sientes hoy?"
+  },
+  "summary.noAnswer": {
+    "source": "7e49c68d",
+    "text": "Sin respuesta"
+  },
+  "summary.backHome": {
+    "source": "eec78426",
+    "text": "Volver al inicio"
+  }
+}

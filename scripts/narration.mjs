@@ -21,6 +21,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const COPY_FILE = join(root, 'src/copy/en.json');
 const LANGUAGES_FILE = join(root, 'src/narration/languages.json');
 const NOT_NARRATED_FILE = join(root, 'src/narration/not-narrated.json');
+const TRANSLATIONS_DIR = join(root, 'narration/translations');
 const AUDIO_DIR = join(root, 'assets/narration');
 const GENERATED_FILE = join(root, 'src/narration/clips.generated.ts');
 const SHEETS_DIR = join(root, 'narration-sheets');
@@ -49,6 +50,25 @@ function loadCopy() {
   return Object.entries(entries)
     .filter(([key]) => narrated(key))
     .map(([key, text]) => ({ key, text, hash: fingerprint(text) }));
+}
+
+/**
+ * The transcript a narrator reads for each key in a language: the English copy
+ * for 'en', otherwise narration/translations/<lang>.json. Each translation
+ * records the English fingerprint it was made from ("source"), so a changed
+ * English string marks its translation stale as well as its clip.
+ */
+function loadTranslations(lang, copy) {
+  if (lang === 'en') return new Map(copy.map((c) => [c.key, { text: c.text, state: 'ok' }]));
+  const file = join(TRANSLATIONS_DIR, `${lang}.json`);
+  const table = existsSync(file) ? readJson(file) : {};
+  return new Map(
+    copy.map((c) => {
+      const t = table[c.key];
+      if (!t) return [c.key, { text: '', state: 'missing' }];
+      return [c.key, { text: t.text, state: t.source === c.hash ? 'ok' : 'stale' }];
+    }),
+  );
 }
 
 const clipName = (key, hash, ext = 'm4a') => `${key}.${hash}.${ext}`;
@@ -97,6 +117,14 @@ function status(strict) {
     console.log(
       `${name} (${code}): ${r.ok.length} in sync, ${r.stale.length} stale, ${r.missing.length} missing, ${r.unknown.length} unknown`,
     );
+    if (code !== 'en') {
+      const t = [...loadTranslations(code, copy).entries()];
+      const missingT = t.filter(([, v]) => v.state === 'missing').map(([k]) => k);
+      const staleT = t.filter(([, v]) => v.state === 'stale').map(([k]) => k);
+      console.log(`  translations: ${t.length - missingT.length - staleT.length} current, ${staleT.length} stale, ${missingT.length} missing`);
+      for (const k of staleT) console.log(`  stale translation  ${k}  (English changed since it was translated)`);
+      if (staleT.length || (strict && missingT.length)) failed = true;
+    }
     for (const s of r.stale) console.log(`  stale    ${s.key}  (expected ${clipName(s.key, s.hash)}, found ${s.files.join(', ')})`);
     for (const u of r.unknown) console.log(`  unknown  ${u.file}  (${u.reason})`);
     if (r.stale.length || r.unknown.length || (strict && r.missing.length)) failed = true;
@@ -143,15 +171,20 @@ function sheet(lang) {
     ...missing.map((c) => [c.key, 'to record']),
   ]);
   const csv = (v) => `"${String(v).replace(/"/g, '""')}"`;
-  const rows = [['key', 'status', 'file name', 'English text'].map(csv).join(',')];
-  for (const c of copy) rows.push([c.key, state.get(c.key), clipName(c.key, c.hash), c.text].map(csv).join(','));
+  const translations = loadTranslations(lang, copy);
+  const rows = [['key', 'status', 'file name', 'English text', 'text to read'].map(csv).join(',')];
+  for (const c of copy) {
+    const t = translations.get(c.key);
+    const read = t.state === 'ok' ? t.text : t.state === 'stale' ? `[translation out of date] ${t.text}` : '[needs translation]';
+    rows.push([c.key, state.get(c.key), clipName(c.key, c.hash), c.text, read].map(csv).join(','));
+  }
   mkdirSync(SHEETS_DIR, { recursive: true });
   const out = join(SHEETS_DIR, `${lang}.csv`);
   writeFileSync(out, rows.join('\n') + '\n');
   console.log(`Wrote ${out.replace(root + '/', '')}: save each clip into assets/narration/${lang}/ with the name in "file name".`);
 }
 
-export { AUDIO_DIR, clipName, generate, loadCopy, scan };
+export { AUDIO_DIR, clipName, generate, LANGUAGES_FILE, loadCopy, loadTranslations, readJson, scan };
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {

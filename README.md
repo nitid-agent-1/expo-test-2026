@@ -37,17 +37,27 @@ mutes narration; both are remembered. Narration pauses while VoiceOver or
 TalkBack is on. Keys listed in `src/narration/not-narrated.json` (header
 titles, About, the narration controls) are never narrated.
 
-The English clips in `assets/narration/en/` are robotic text-to-speech
-placeholders for testing. Replace them with real recordings using the same
+The clips in `assets/narration/` are robotic text-to-speech placeholders for
+testing. Replace them with real recordings using the same
 file names.
 
-To add a language: add it to `src/narration/languages.json`, run the sheet
-command below, record the clips with the listed file names into
-`assets/narration/<code>/`, then run `narration:generate`.
+Narration languages: English, Spanish (`es`) and Korean (`ko`). Each non-English
+language has a transcript in `narration/translations/<code>.json`: the text the
+narrator reads for every key, plus the English fingerprint it was translated
+from (`source`). When an English string changes, `narration:status` flags both
+the translation and the clip as stale. The Spanish and Korean translations,
+including the poem (an original translation of Carroll's invented words), are
+drafts that should be reviewed by native speakers, and their clips are robotic
+placeholders like the English ones.
+
+To add a language: add it to `src/narration/languages.json`, write
+`narration/translations/<code>.json`, run the sheet command below, record the
+clips with the listed file names into `assets/narration/<code>/`, then run
+`narration:generate`.
 
 ```bash
 npm run narration:status        # in sync / stale / missing / unknown clips per language
 npm run narration:sheet -- es   # recording sheet with exact file names: narration-sheets/es.csv
 npm run narration:generate      # regenerate src/narration/clips.generated.ts after adding clips
-npm run narration:placeholders  # robotic English test clips for missing/stale keys (needs espeak-ng and ffmpeg)
+npm run narration:placeholders -- es  # robotic test clips for missing/stale keys (needs espeak-ng and ffmpeg)
 ```

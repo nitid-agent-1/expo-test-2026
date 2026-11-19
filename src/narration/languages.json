@@ -1,3 +1,5 @@
 [
-  { "code": "en", "name": "English" }
+  { "code": "en", "name": "English", "placeholderVoice": "en-us" },
+  { "code": "es", "name": "Spanish (Español)", "placeholderVoice": "es-419" },
+  { "code": "ko", "name": "Korean (한국어)", "placeholderVoice": "ko" }
 ]

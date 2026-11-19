@@ -8,6 +8,11 @@ import languages from './languages.json';
  * language tag. ISO 639-3 codes (for example "quc") work for languages that
  * have no two-letter code. Edit languages.json, not this file.
  */
-export type NarrationLanguageInfo = { code: string; name: string };
+export type NarrationLanguageInfo = {
+  code: string;
+  name: string;
+  /** espeak-ng voice used only by scripts/placeholder-clips.mjs for test clips. */
+  placeholderVoice?: string;
+};
 
 export const NARRATION_LANGUAGES: readonly NarrationLanguageInfo[] = languages;
