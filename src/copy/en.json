@@ -76,8 +76,10 @@
     "backHome": "Back to Home"
   },
   "narration": {
-    "mute": "Mute narration",
-    "unmute": "Unmute narration",
+    "play": "Play narration",
+    "pause": "Pause narration",
+    "restart": "Restart narration from the top of this screen",
+    "progress": "Narration progress",
     "languageButton": "Narration language: {{language}}",
     "pickerHint": "The text on screen stays in English. This chooses the language you hear.",
     "clipCount": "{{recorded}} of {{total}} clips recorded",

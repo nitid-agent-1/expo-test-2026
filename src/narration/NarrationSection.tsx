@@ -3,7 +3,7 @@ import { Animated, StyleSheet, type StyleProp, View, type ViewStyle } from 'reac
 
 import { colors } from '@/constants/theme';
 
-import { useNarration } from './NarrationProvider';
+import { useNarrationState } from './NarrationProvider';
 import { useScrollReveal } from './NarrationScrollView';
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 
 /** Wraps a block of the screen and draws a glowing outline around it while it is narrated. */
 export function NarrationSection({ id, children, style }: Props) {
-  const { activeSection } = useNarration();
+  const { activeSection } = useNarrationState();
   const active = activeSection === id;
   const scroll = useScrollReveal();
   const ref = useRef<ComponentRef<typeof View>>(null);

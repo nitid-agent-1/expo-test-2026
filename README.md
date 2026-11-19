@@ -31,9 +31,13 @@ its clips in every language as stale. Narration languages are listed in
 
 Each screen narrates itself when it opens (`src/narration/scripts.ts` lists the
 sections and clips, in order), and the section being read glows. Tapping an
-answer plays its own confirmation clip ("You selected “Happy”."). The globe
-button in the header picks the narration language and the speaker button
-mutes narration; both are remembered. Narration pauses while VoiceOver or
+answer plays its own confirmation clip ("You selected “Happy”."), then the
+screen carries on from the clip it interrupted. The header shows the narration
+language (globe button), a progress bar for the current screen, Restart (start
+the screen from the top) and Play/Pause. Pause holds the exact spot; it applies
+across screens, and a new screen opened while paused starts from its top when
+played. The language and the pause choice are remembered. The narration logic
+lives in `src/narration/engine.ts`. Narration pauses while VoiceOver or
 TalkBack is on. Keys listed in `src/narration/not-narrated.json` (header
 titles, About, the narration controls) are never narrated.
 
