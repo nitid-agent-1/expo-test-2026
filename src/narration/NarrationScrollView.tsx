@@ -48,10 +48,38 @@ export function NarrationScrollView({ children, style, contentContainerStyle }: 
   const insets = useRef({ top: safeArea.top + NAV_BAR_ESTIMATE, bottom: safeArea.bottom });
   const height = useRef(0);
 
+  // Who is allowed to move the page: the user (dragging, or tapping the status bar) and the narration (reveal).
+  const userScrolling = useRef(false);
+  const allowedUntil = useRef(0);
+  const allowFor = (ms: number) => {
+    allowedUntil.current = Date.now() + ms;
+  };
+
   const onScroll = useCallback((e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentOffset, contentInset } = e.nativeEvent;
     insets.current = { top: contentInset.top, bottom: contentInset.bottom };
-    scrolledBy.current = contentOffset.y + contentInset.top;
+    const next = contentOffset.y + contentInset.top;
+    const previous = scrolledBy.current;
+    // A jump to the top that nobody asked for (seen when the header's narration controls
+    // update while paused): put the page back where it was. User scrolls and status-bar taps
+    // move gradually, so their last step before the top is small and passes through.
+    if (next < 1 && previous > 40 && !userScrolling.current && Date.now() > allowedUntil.current) {
+      scrollRef.current?.scrollTo({ y: previous - contentInset.top, animated: false });
+      return;
+    }
+    scrolledBy.current = next;
+  }, []);
+
+  const onDragStart = useCallback(() => {
+    userScrolling.current = true;
+  }, []);
+  const onDragEnd = useCallback(() => {
+    userScrolling.current = false;
+    // Momentum after a fling is still the user's scroll.
+    allowFor(1500);
+  }, []);
+  const onScrollToTop = useCallback(() => {
+    scrolledBy.current = 0;
   }, []);
 
   const onLayout = useCallback((e: LayoutChangeEvent) => {
@@ -70,6 +98,7 @@ export function NarrationScrollView({ children, style, contentContainerStyle }: 
         if (y - MARGIN >= top && y + h + MARGIN <= bottom) return;
         // Centre the section, or align its top if it is taller than the screen.
         const target = h + 2 * MARGIN > visible ? y - MARGIN : y - (visible - h) / 2;
+        allowFor(1000);
         scrollRef.current?.scrollTo({ y: Math.max(0, target) - insets.current.top, animated: true });
       },
       () => {},
@@ -85,6 +114,10 @@ export function NarrationScrollView({ children, style, contentContainerStyle }: 
         style={style}
         contentInsetAdjustmentBehavior="automatic"
         onScroll={onScroll}
+        onScrollBeginDrag={onDragStart}
+        onScrollEndDrag={onDragEnd}
+        scrollsToTop
+        onScrollToTop={onScrollToTop}
         scrollEventThrottle={32}
         onLayout={onLayout}>
         <View ref={contentRef} style={contentContainerStyle}>

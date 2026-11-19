@@ -15,7 +15,7 @@ type Props = {
 
 /** Wraps a block of the screen and draws a glowing outline around it while it is narrated. */
 export function NarrationSection({ id, children, style }: Props) {
-  const { activeSection } = useNarrationState();
+  const { activeSection, running } = useNarrationState();
   const active = activeSection === id;
   const scroll = useScrollReveal();
   const ref = useRef<ComponentRef<typeof View>>(null);
@@ -23,8 +23,13 @@ export function NarrationSection({ id, children, style }: Props) {
 
   useEffect(() => {
     Animated.timing(glow, { toValue: active ? 1 : 0, duration: 180, useNativeDriver: true }).start();
-    if (active && ref.current) scroll?.reveal(ref.current);
-  }, [active, glow, scroll]);
+  }, [active, glow]);
+
+  // Keep the section being read on screen: when it starts, and again when narration resumes.
+  // Nothing moves while narration is paused.
+  useEffect(() => {
+    if (active && running && ref.current) scroll?.reveal(ref.current);
+  }, [active, running, scroll]);
 
   return (
     <View ref={ref} style={style}>

@@ -19,14 +19,21 @@ import type { NarrationScript, NarrationSegment } from './scripts';
 
 const STORAGE_KEY = 'narration.settings.v1';
 
-type Settings = { language: string; paused: boolean };
-const DEFAULT_SETTINGS: Settings = { language: NARRATION_LANGUAGES[0]?.code ?? 'en', paused: false };
+type Settings = { language: string };
+const DEFAULT_SETTINGS: Settings = { language: NARRATION_LANGUAGES[0]?.code ?? 'en' };
+
+/**
+ * Only treat the app as away when it is in the background. At launch iOS reports
+ * "inactive" (or "unknown") before "active", and that change can arrive before
+ * anything is listening, which would otherwise leave narration waiting.
+ */
+const isForeground = (state: string | null | undefined) => state !== 'background';
 
 type NarrationContextValue = {
   engine: NarrationEngine;
   language: string;
   setLanguage: (code: string) => void;
-  /** The user's play/pause choice. Applies across screens and is remembered between launches. */
+  /** The user's play/pause choice. Applies across screens; every launch starts playing. */
   paused: boolean;
   /** Pause if narrating; otherwise play (resuming where it stopped, or replaying a finished screen). */
   togglePlayback: () => void;
@@ -49,9 +56,10 @@ export function NarrationProvider({ children }: { children: ReactNode }) {
   const player = useAudioPlayer(null, { updateInterval: 100 });
   const [engine] = useState(() => new NarrationEngine());
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+  const [paused, setPaused] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [screenReaderOn, setScreenReaderOn] = useState(false);
-  const [appActive, setAppActive] = useState(AppState.currentState === 'active');
+  const [appActive, setAppActive] = useState(isForeground(AppState.currentState));
 
   useEffect(() => {
     // Narration should be heard even with the ringer switch off, and should lower (not stop) other audio.
@@ -68,13 +76,10 @@ export function NarrationProvider({ children }: { children: ReactNode }) {
     AsyncStorage.getItem(STORAGE_KEY)
       .then((raw) => {
         if (!raw) return;
-        const saved = JSON.parse(raw) as Partial<Settings> & { muted?: boolean };
+        // Only the language is remembered; older versions also saved a paused/muted flag, which is ignored.
+        const saved = JSON.parse(raw) as Partial<Settings>;
         const known = NARRATION_LANGUAGES.some((l) => l.code === saved.language);
-        setSettings({
-          language: known && saved.language ? saved.language : DEFAULT_SETTINGS.language,
-          // Earlier versions called this setting "muted".
-          paused: saved.paused ?? saved.muted ?? DEFAULT_SETTINGS.paused,
-        });
+        setSettings({ language: known && saved.language ? saved.language : DEFAULT_SETTINGS.language });
       })
       .catch(() => {})
       .finally(() => setLoaded(true));
@@ -83,7 +88,7 @@ export function NarrationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     AccessibilityInfo.isScreenReaderEnabled().then(setScreenReaderOn).catch(() => {});
     const reader = AccessibilityInfo.addEventListener('screenReaderChanged', setScreenReaderOn);
-    const app = AppState.addEventListener('change', (state) => setAppActive(state === 'active'));
+    const app = AppState.addEventListener('change', (state) => setAppActive(isForeground(state)));
     return () => {
       reader.remove();
       app.remove();
@@ -95,8 +100,8 @@ export function NarrationProvider({ children }: { children: ReactNode }) {
     engine.setClips(CLIPS[settings.language] ?? {});
   }, [engine, settings.language]);
   useEffect(() => {
-    engine.setBlocked(!loaded || settings.paused || screenReaderOn || !appActive);
-  }, [engine, loaded, settings.paused, screenReaderOn, appActive]);
+    engine.setBlocked(!loaded || paused || screenReaderOn || !appActive);
+  }, [engine, loaded, paused, screenReaderOn, appActive]);
 
   const save = useCallback((update: (prev: Settings) => Settings) => {
     setSettings((prev) => {
@@ -109,15 +114,15 @@ export function NarrationProvider({ children }: { children: ReactNode }) {
   const setLanguage = useCallback((code: string) => save((s) => ({ ...s, language: code })), [save]);
 
   const togglePlayback = useCallback(() => {
-    if (engine.state.get().running) save((s) => ({ ...s, paused: true }));
-    else if (settings.paused) save((s) => ({ ...s, paused: false }));
+    if (engine.state.get().running) setPaused(true);
+    else if (paused) setPaused(false);
     else engine.restart();
-  }, [engine, save, settings.paused]);
+  }, [engine, paused]);
 
   const restart = useCallback(() => {
     engine.restart();
-    if (settings.paused) save((s) => ({ ...s, paused: false }));
-  }, [engine, save, settings.paused]);
+    setPaused(false);
+  }, [engine]);
 
   const start = useCallback((script: NarrationScript) => engine.start(script), [engine]);
   const stop = useCallback(() => engine.stop(), [engine]);
@@ -128,7 +133,7 @@ export function NarrationProvider({ children }: { children: ReactNode }) {
       engine,
       language: settings.language,
       setLanguage,
-      paused: settings.paused,
+      paused,
       togglePlayback,
       restart,
       screenReaderOn,
@@ -136,7 +141,7 @@ export function NarrationProvider({ children }: { children: ReactNode }) {
       stop,
       say,
     }),
-    [engine, settings, setLanguage, togglePlayback, restart, screenReaderOn, start, stop, say],
+    [engine, settings, paused, setLanguage, togglePlayback, restart, screenReaderOn, start, stop, say],
   );
 
   return <NarrationContext.Provider value={value}>{children}</NarrationContext.Provider>;
