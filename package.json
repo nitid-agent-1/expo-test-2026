@@ -34,7 +34,8 @@
     "narration:status": "node scripts/narration.mjs status",
     "narration:generate": "node scripts/narration.mjs generate",
     "narration:sheet": "node scripts/narration.mjs sheet",
-    "narration:placeholders": "node scripts/placeholder-clips.mjs"
+    "narration:placeholders": "node scripts/placeholder-clips.mjs",
+    "narration:elevenlabs": "node scripts/elevenlabs-clips.mjs"
   },
   "private": true
 }

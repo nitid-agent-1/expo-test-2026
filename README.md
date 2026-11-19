@@ -61,3 +61,10 @@ npm run narration:sheet -- es   # recording sheet with exact file names: narrati
 npm run narration:generate      # regenerate src/narration/clips.generated.ts after adding clips
 npm run narration:placeholders -- es  # robotic test clips for missing/stale keys (needs espeak-ng and ffmpeg)
 ```
+
+To voice clips with ElevenLabs (needs ffmpeg and an API key with Text to Speech
+access in `ELEVENLABS_API_KEY`; `--all` also replaces placeholder clips):
+
+```bash
+npm run narration:elevenlabs -- --all XrExE9yKIg1WjnnlVkGX en es ko   # Matilda, eleven_multilingual_v2
+```
